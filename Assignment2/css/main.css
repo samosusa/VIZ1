@@ -154,3 +154,39 @@ a {
 .sources ul li {
   margin: 3px 0;
 }
+
+/* Add these rules to the END of css/main.css. */
+
+/* Flexible legend for 8 color-coded categories */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 18px;
+  margin: 15px 0 25px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.legend-color { display: inline-block; width: 13px; height: 13px; flex: none; border-radius: 2px; }
+.legend-label { white-space: nowrap; }
+
+/* SVG chart tooltip */
+#viz { position: relative; }
+.chart-tooltip {
+  position: absolute;
+  z-index: 10;
+  box-sizing: border-box;
+  min-width: 180px;
+  max-width: min(270px, 95%);
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #45343D;
+  font: 12px/1.4 'Oxygen', sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  pointer-events: none;
+}
+.tooltip-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 5px; }
+.tooltip-category { display: flex; align-items: center; gap: 6px; }
+.tooltip-color { display: inline-block; width: 9px; height: 9px; flex: none; }
