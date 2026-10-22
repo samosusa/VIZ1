@@ -343,9 +343,9 @@ function createViz(data, categories) {
         exit => exit.transition(transition).attr("opacity", 0).remove()
       );
 
-    // Changing the number of years changes path command counts. D3's default
-    // interpolation of unequal SVG paths can fold or twist. We fade each path
-    // out briefly, set correct geometry, then fade in instead of morphing it.
+    // Changing the number of years changes SVG path command counts.
+    // Update geometry immediately, then fade in to avoid distorted
+    // interpolation between paths with different numbers of points.
     
     // Stop previous animations before starting a new one.
     paths.interrupt();
@@ -364,12 +364,17 @@ function createViz(data, categories) {
         .attr("opacity", 1);
     }
 
-    // Update axes with a shared transition.
+    // Display only whole years, including when the range is very short.
+    const xTicks = singleYear
+      ? [startYear]
+      : d3.ticks(startYear, endYear, 10).filter(Number.isInteger);
+
+    // Update axes with a shared transition for smooth animation.
     const xAxisGenerator = d3.axisBottom(viz.xScale)
-      .ticks(singleYear ? 1 : 10)
+      .tickValues(xTicks)
       .tickFormat(d3.format("d"));
     const yAxisGenerator = d3.axisLeft(viz.yScale).ticks(6);
-
+    
     viz.xAxis.transition(transition).call(xAxisGenerator);
     viz.yAxis.transition(transition).call(yAxisGenerator);
 
