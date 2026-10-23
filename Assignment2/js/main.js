@@ -244,7 +244,9 @@ function createViz(data, categories) {
       set: [minYear, maxYear],
       onChange: value => {
         const years = value.split(",").map(Number);
-        if (years.length === 2 && years.every(Number.isFinite)) {
+        const [start, end] = model.selectedYears;
+        if (years.length === 2 && years.every(Number.isFinite)
+            && (years[0] !== start || years[1] !== end)) {
           update({ selectedYears: years });
         }
       }
