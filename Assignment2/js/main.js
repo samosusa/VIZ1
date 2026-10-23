@@ -31,7 +31,8 @@ function log(...message) {
 d3.csv(DATA_PATH)
   .then(rawData => {
     const data = cleanData(rawData);
-    const categories = Array.from(new Set(data.map(d => d.category)));
+    // Use the fixed order from CATEGORY_COLORS (matches the wireframe legend)
+    const categories = Array.from(CATEGORY_COLORS.keys());
     log("Data loaded", { songs: data.length, categories: categories.length });
     createViz(data, categories);
   })
