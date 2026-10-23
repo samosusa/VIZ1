@@ -305,16 +305,17 @@ function createViz(data, categories) {
       ? model.categories
       : [model.selectedCategory];
 
-    // For a single selected year, duplicate its sample at nearby x-values.
-    // This makes a visible flat area rather than an empty one-point SVG path.
-    const singleYear = startYear === endYear;
-    const plotData = singleYear && filteredData.length === 1
-      ? [
-          { ...filteredData[0], year: startYear - 0.5 },
-          { ...filteredData[0], year: startYear + 0.5 }
-        ]
-      : filteredData;
+   // Stack ALL categories over ALL years, and hidden categories get height 0.
+    // Every path keeps the same number of points, so D3 can morph "d" smoothly instead of fading between incompatible paths.
+    // Keys are reversed so the first category (Non-love Songs) ends up on top.
+    const stackedData = d3.stack()
+      .keys(model.categories.slice().reverse())
+      .value((row, key) => visibleCategories.includes(key) ? row[key] : 0)
+      .order(d3.stackOrderNone)
+      .offset(d3.stackOffsetNone)(model.groupedData);
 
+    // The year range only changes the x-domain, the clip path hides the rest.
+    const singleYear = startYear === endYear;
     viz.xScale.domain(singleYear
       ? [startYear - 0.5, endYear + 0.5]
       : [startYear, endYear]);
@@ -324,47 +325,19 @@ function createViz(data, categories) {
     ) ?? 0;
     viz.yScale.domain([0, Math.max(1, maxSongs)]).nice();
 
-    const stackedData = d3.stack()
-      .keys(visibleCategories)
-      .order(d3.stackOrderNone)
-      .offset(d3.stackOffsetNone)(plotData);
-
     // A shared transition synchronizes paths and both axes.
     const transition = d3.transition()
       .duration(animate ? TRANSITION_MS : 0)
       .ease(d3.easeCubicInOut);
 
-    const paths = viz.areasGroup.selectAll("path.area")
+    viz.areasGroup.selectAll("path.area")
       .data(stackedData, d => d.key)
-      .join(
-        enter => enter.append("path")
-          .attr("class", "area")
-          .attr("fill", d => viz.colorScale(d.key))
-          .attr("opacity", 0),
-        updateSelection => updateSelection,
-        exit => exit.transition(transition).attr("opacity", 0).remove()
-      );
-
-    // Changing the number of years changes SVG path command counts.
-    // Update geometry immediately, then fade in to avoid distorted
-    // interpolation between paths with different numbers of points.
-    
-    // Stop previous animations before starting a new one.
-    paths.interrupt();
-    if (animate) {
-      // Update the geometry immediately, then fade in.
-      // This avoids interpolating incompatible SVG paths.
-      paths
-        .attr("d", viz.area)
-        .attr("opacity", 0)
-        .transition(transition)
-        .attr("opacity", 1);
-    } else {
-      // Draw immediately on the initial page load.
-      paths
-        .attr("d", viz.area)
-        .attr("opacity", 1);
-    }
+      .join(enter => enter.append("path")
+        .attr("class", "area")
+        .attr("fill", d => viz.colorScale(d.key))
+        .attr("d", viz.area))
+      .transition(transition)
+      .attr("d", viz.area);
 
     // Display only whole years, including when the range is very short.
     const xTicks = singleYear
