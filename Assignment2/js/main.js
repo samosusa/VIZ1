@@ -140,7 +140,16 @@ function createViz(data, categories) {
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Layer order: areas BELOW guideline BELOW transparent hover overlay.
-    const areasGroup = chart.append("g").attr("class", "areas-group");
+    // Clip areas to the chart, since paths always span all years and only the x-domain changes when the year range is narrowed.
+    svg.append("defs").append("clipPath")
+      .attr("id", "chart-clip")
+      .append("rect")
+      .attr("width", innerWidth)
+      .attr("height", innerHeight);
+
+    const areasGroup = chart.append("g")
+      .attr("class", "areas-group")
+      .attr("clip-path", "url(#chart-clip)");
     const hoverLine = chart.append("line")
       .attr("class", "hover-line")
       .attr("y1", 0)
