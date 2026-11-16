@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@400;700&display=swap');
+
+html {
+  box-sizing: border-box;
+}
+*, ::after, ::before {
+  box-sizing: inherit;
+}
+body {
+  margin: 0;
+  background-color: #FDF9F5;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 16px;
+  color: #45343D;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+h1 {
+  margin: 60px 0 5px;
+  font-size: 45px;
+}
+h2 {
+  margin: 50px 0 15px;
+  font-size: 30px;
+}
+h3 {
+  margin: 30px 0 10px;
+  font-size: 18px;
+}
+h4 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.hidden {
+  display: none !important;
+}
+.subtitle {
+  font-weight: 700;
+}
+.intro {
+  margin: 20px 0 30px;
+  max-width: 800px;
+  line-height: 1.5;
+}
+.small {
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+/* How to read */
+.how-to-read {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #C1B9BA;
+}
+.read-block {
+  flex: 1 1 200px;
+  font-size: 14px;
+}
+.legend-spoke line {
+  stroke: #45343D;
+  stroke-width: 1.5;
+}
+.legend-spoke circle {
+  fill: #8b5a2b;
+}
+.legend-spoke text {
+  font-size: 12px;
+  fill: #45343D;
+}
+.hair-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.hair-legend button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #45343D;
+  background: #fff;
+  border: 1px solid #C1B9BA;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.hair-legend button.active {
+  color: #FDF9F5;
+  background: #45343D;
+  border-color: #45343D;
+}
+.swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid #888;
+}
+.frost-legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.frost-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Visualization + details panel */
+.viz-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+#viz {
+  flex: 1;
+  min-width: 0;
+}
+#viz svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.band-arc {
+  fill: #ddd5d3;
+  stroke: #FDF9F5;
+  cursor: pointer;
+}
+.band-arc:hover {
+  fill: #C1B9BA;
+}
+.band-arc.selected {
+  fill: #45343D;
+}
+.band-label {
+  font-size: 11px;
+  fill: #45343D;
+  pointer-events: none;
+}
+.band-label.selected {
+  font-weight: 700;
+}
+.member line {
+  stroke: #45343D;
+  stroke-width: 1.2;
+}
+.member circle {
+  stroke: #45343D;
+  stroke-width: 1;
+}
+.member .frost {
+  stroke: #45343D;
+  stroke-width: 1;
+}
+.decade-arc {
+  fill: #45343D;
+}
+.decade-arc.unknown {
+  fill: #C1B9BA;
+}
+.decade-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: #45343D;
+}
+.center-main {
+  font-size: 26px;
+  font-weight: 700;
+  fill: #45343D;
+}
+.center-sub {
+  font-size: 16px;
+  fill: #45343D;
+}
+
+.details {
+  position: relative;
+  flex: 0 0 300px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #C1B9BA;
+  border-radius: 6px;
+}
+.details-label {
+  font-size: 13px;
+}
+.details h2 {
+  margin: 4px 0 15px;
+  font-size: 24px;
+}
+.details-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 24px;
+  color: #45343D;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.details ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.details li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+}
+.details .swatch {
+  width: 22px;
+  height: 22px;
+}
+.member-name {
+  font-weight: 700;
+}
+.member-info {
+  font-size: 13px;
+}
+
+/* Reflection */
+.reflection {
+  max-width: 900px;
+  line-height: 1.5;
+}
+.reflection table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.reflection th,
+.reflection td {
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #C1B9BA;
+}
+.reflection th {
+  background: #efe8e3;
+}
+
+/* Sources */
+.sources {
+  margin: 60px 0;
+}
+.sources-label {
+  font-weight: 700;
+}
+
+/* Small screens: put the panel under the chart */
+@media screen and (max-width: 900px) {
+  .viz-layout {
+    flex-direction: column;
+  }
+  .details {
+    flex: none;
+    width: 100%;
+  }
+  .reflection table {
+    display: block;
+    overflow-x: auto;
+  }
+}

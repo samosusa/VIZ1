@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>The Boyband Blueprint</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+
+<body>
+	<div class="container">
+		<h1>The Boyband Blueprint</h1>
+		<div class="subtitle">Each generation of boybands had its own look</div>
+		<div class="intro">
+			<p>This visualization shows 234 members of 55 boybands. The bands go clockwise around the circle,
+				from the oldest generation to the youngest, sorted by the average birth year of their members.
+				Each spoke is one member and shows his hair. Members born in the 1970s mostly wore short hair
+				and gave us most of the frosted tips. Members born in the 1990s wear medium-length hair and are the
+				only ones who dyed it red, blue, green or silver.</p>
+		</div>
+
+		<h3>How to read this visualization</h3>
+		<div class="how-to-read">
+			<div class="read-block">
+				<h4>Where is the band?</h4>
+				<p>Position around the circle = average birth decade of the members (oldest at 12 o'clock, going
+					clockwise). The length of the band's arc = number of members.</p>
+			</div>
+			<div class="read-block">
+				<h4>How long is his hair?</h4>
+				<svg viewBox="0 0 160 70" width="160" height="70" aria-hidden="true">
+					<g class="legend-spoke"><line x1="10" y1="12" x2="50" y2="12"></line><circle cx="50" cy="12" r="5"></circle><text x="70" y="16">short</text></g>
+					<g class="legend-spoke"><line x1="10" y1="34" x2="80" y2="34"></line><circle cx="80" cy="34" r="5"></circle><text x="95" y="38">medium</text></g>
+					<g class="legend-spoke"><line x1="10" y1="56" x2="110" y2="56"></line><circle cx="110" cy="56" r="5"></circle><text x="125" y="60">long</text></g>
+				</svg>
+				<p class="small">A dashed short spoke means the length is unknown.</p>
+			</div>
+			<div class="read-block">
+				<h4>What hair colour does he have?</h4>
+				<p class="small">Click a colour to highlight only those members.</p>
+				<div id="hair-legend" class="hair-legend"></div>
+			</div>
+			<div class="read-block">
+				<h4>Did he frost his tips?</h4>
+				<ul id="frost-legend" class="frost-legend"></ul>
+			</div>
+		</div>
+
+		<div class="viz-layout">
+			<div id="viz"></div>
+			<aside id="details" class="details hidden" aria-live="polite">
+				<button type="button" class="details-close" aria-label="Close details">&times;</button>
+				<div class="details-label">Selected band</div>
+				<h2 class="details-title"></h2>
+				<ul></ul>
+			</aside>
+		</div>
+
+		<section class="reflection">
+			<h2>Reflection</h2>
+
+			<h3>Visualization question</h3>
+			<ul>
+				<li><strong>My visualization investigates</strong> how the boyband look (hair) changes between
+					generations of boyband members.</li>
+				<li><strong>The most important data attributes are</strong> band, date of birth, hair colour, hair
+					length and frosted tips.</li>
+				<li><strong>The reader should first notice</strong> the generations around the circle and how the
+					spokes get shorter for the 1970s and longer again for the 1990s.</li>
+				<li><strong>The reader should then be able to explore</strong> single bands and their members, and
+					where a given hair colour appears.</li>
+			</ul>
+
+			<h3>Marks and channels</h3>
+			<table>
+				<thead>
+					<tr><th>Data attribute</th><th>Mark</th><th>Channel</th><th>Why this choice?</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>Band (categorical)</td><td>Arc</td><td>Spatial region on the ring</td><td>Each band gets its own region, so its members are grouped together (proximity).</td></tr>
+					<tr><td>Average birth year (quantitative, derived)</td><td>Arc</td><td>Angle (order around the circle)</td><td>The circle reads like a clock, so going clockwise means going forward in time.</td></tr>
+					<tr><td>Number of members (quantitative, derived)</td><td>Arc</td><td>Arc length</td><td>Big bands take more of the circle, and every member gets the same amount of space.</td></tr>
+					<tr><td>Birth decade (ordinal, derived)</td><td>Thin outer arc + label</td><td>Spatial region</td><td>Groups the bands into generations so the reader can compare them.</td></tr>
+					<tr><td>Hair length (ordinal)</td><td>Line (spoke)</td><td>Length</td><td>Length is a strong channel for ordered data, and a longer line feels like longer hair.</td></tr>
+					<tr><td>Hair colour (categorical)</td><td>Point (circle)</td><td>Colour hue</td><td>Hue is good for categories, and the real hair colours need no lookup.</td></tr>
+					<tr><td>Frosted tips (categorical)</td><td>Point (diamond)</td><td>Shape + hue</td><td>A different shape pops out from the circles, and it is only drawn when there are frosted tips.</td></tr>
+				</tbody>
+			</table>
+
+			<h3>What does the arc structure represent?</h3>
+			<p>The ring is a timeline. <code>d3.pie()</code> splits the circle into one arc per band, ordered by the
+				average birth year of the members, and the arc length is the band size. A thin outer ring groups
+				the bands into birth decades. The member spokes are placed with <code>Math.sin()</code> and
+				<code>Math.cos()</code> (through rotation) inside their band's arc. A small gap at 12 o'clock shows
+				where the timeline starts and ends.</p>
+
+			<h3>Attributes I chose not to visualize</h3>
+			<p>Height is missing for 115 of 234 members, so drawing it would mostly show missing data. Clothes,
+				accessories, eye colour and instruments are interesting, but adding them would bury the message
+				about hair and generations. Skin colour was left out on purpose: the question is about style
+				choices, not about the members' bodies.</p>
+
+			<h3>Interaction</h3>
+			<p>Clicking a band highlights it, dims the others and opens a panel with the members' names, birth
+				dates and hair. This gives the overview first and the details on demand. Clicking a hair colour in
+				the legend dims all other members, so the reader can see where that colour appears across the
+				generations (for example blonde or the dyed colours). Both use short opacity transitions so the
+				reader can follow the change. The legend uses normal HTML buttons and the panel is HTML text, so
+				the details also work with a keyboard and a screen reader.</p>
+
+			<h3>What I would improve with more time</h3>
+			<ul>
+				<li>The six bands with no birth dates sit in an "unknown" section. Finding their birth years would
+					complete the timeline.</li>
+				<li>Some people appear twice (for example Ricky Bell in New Edition and Bell Biv DeVoe, and IMx is
+					a renamed Immature). I would mark those links.</li>
+				<li>Test the hair colours with a colour-blindness simulator and with real users.</li>
+			</ul>
+		</section>
+
+		<div class="sources">
+			<div class="sources-label">Sources</div>
+			<ul>
+				<li>Boyband dataset (boys.csv), provided in the VIZ1 course.</li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="https://d3js.org/d3.v7.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+
+</html>
