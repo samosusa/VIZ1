@@ -1,2 +1,8 @@
+# macOS metadata
 .DS_Store
+._*
 __MACOSX/
+
+# Windows metadata
+Thumbs.db
+Desktop.ini
