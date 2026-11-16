@@ -15,17 +15,22 @@
 		<div class="intro">
 			<p>This visualization shows 234 members of 55 boybands. The bands go clockwise around the circle,
 				from the oldest generation to the youngest, sorted by the average birth year of their members.
-				Each spoke is one member and shows his hair. Members born in the 1970s mostly wore short hair
-				and gave us most of the frosted tips. Members born in the 1990s wear medium-length hair and are the
-				only ones who dyed it red, blue, green or silver.</p>
+				Each spoke represents one member and shows his hair. In this dataset, members born in the 1970s 
+				mostly have short hair and account for half of the 14 frosted-tip records. Members born in the 1990s 
+				mostly have	medium-length hair, and all red, blue, green and silver hair-colour records belong to 
+				this group.</p>
 		</div>
 
 		<h3>How to read this visualization</h3>
 		<div class="how-to-read">
 			<div class="read-block">
 				<h4>Where is the band?</h4>
-				<p>Position around the circle = average birth decade of the members (oldest at 12 o'clock, going
-					clockwise). The length of the band's arc = number of members.</p>
+				<p>Bands are ordered clockwise by their average available birth year,
+				from oldest to youngest. Arc length shows the number of members.
+				The outer ring groups bands by the decade of their average birth year.
+				Angular distances do not represent elapsed years.</p>
+				<p>Click a band to explore its members, or use Tab to focus a band and 
+				Enter or Space to select it.</p>
 			</div>
 			<div class="read-block">
 				<h4>How long is his hair?</h4>
@@ -89,11 +94,12 @@
 			</table>
 
 			<h3>What does the arc structure represent?</h3>
-			<p>The ring is a timeline. <code>d3.pie()</code> splits the circle into one arc per band, ordered by the
-				average birth year of the members, and the arc length is the band size. A thin outer ring groups
-				the bands into birth decades. The member spokes are placed with <code>Math.sin()</code> and
-				<code>Math.cos()</code> (through rotation) inside their band's arc. A small gap at 12 o'clock shows
-				where the timeline starts and ends.</p>
+			<p>The ring orders bands by their average available birth year. Angular distances do not represent
+				elapsed time. <code>d3.pie()</code> splits the circle into one arc per band, with arc length
+				representing the number of members. A thin outer ring groups bands by the decade of their
+				average available birth year. SVG rotations position the member spokes inside their band's arc.
+				<code>Math.sin()</code> and <code>Math.cos()</code> position the decade labels. A small gap at
+				12 o'clock marks the beginning and end of the sequence.</p>
 
 			<h3>Attributes I chose not to visualize</h3>
 			<p>Height is missing for 115 of 234 members, so drawing it would mostly show missing data. Clothes,
@@ -106,8 +112,8 @@
 				dates and hair. This gives the overview first and the details on demand. Clicking a hair colour in
 				the legend dims all other members, so the reader can see where that colour appears across the
 				generations (for example blonde or the dyed colours). Both use short opacity transitions so the
-				reader can follow the change. The legend uses normal HTML buttons and the panel is HTML text, so
-				the details also work with a keyboard and a screen reader.</p>
+				reader can follow the change. Band arcs and hair-colour buttons support keyboard activation. 
+				Selected-band details are presented as HTML in a polite live region.</p>
 
 			<h3>What I would improve with more time</h3>
 			<ul>

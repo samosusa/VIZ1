@@ -143,6 +143,13 @@ h4 {
 .band-arc.selected {
   fill: #45343D;
 }
+.band-arc:focus {
+  outline: none;
+}
+.band-arc:focus-visible {
+  stroke: #45343D;
+  stroke-width: 3;
+}
 .band-label {
   font-size: 11px;
   fill: #45343D;

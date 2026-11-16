@@ -102,7 +102,7 @@ function createDOM() {
   const svg = d3.select("#viz")
     .append("svg")
     .attr("viewBox", `-120 0 ${SIZE + 240} ${SIZE}`)
-    .attr("role", "img")
+    .attr("role", "group")
     .attr("aria-labelledby", "viz-title viz-desc");
 
   svg.append("title").attr("id", "viz-title")
@@ -225,7 +225,7 @@ function drawDecades({ dom, viz }) {
     .attr("dy", "0.35em")
     .attr("x", d => position(d)[0])
     .attr("y", d => position(d)[1])
-    .text(d => d.label === "Unknown" ? "Birth year unknown" : `Born in the ${d.label}`);
+    .text(d => d.label === "Unknown" ? "Birth year unknown" : `Band average: ${d.label}`);
 }
 
 function drawBands({ model, dom, viz, update }) {
@@ -237,10 +237,29 @@ function drawBands({ model, dom, viz, update }) {
       return path;
     })
     .attr("d", viz.bandArc)
+    .attr("tabindex", 0)
+    .attr("role", "button")
+    .attr("aria-label", d =>
+      `${d.data.name}, ${d.data.members.length} members`)
+    .attr("aria-pressed", d =>
+      d.data.name === model.selectedBand)
+    .attr("aria-controls", "details")
     .classed("selected", d => d.data.name === model.selectedBand)
     .on("click", (event, d) => {
       // clicking the same band again deselects it
       const name = d.data.name === model.selectedBand ? null : d.data.name;
+      update({ selectedBand: name });
+    })
+        .on("keydown", (event, d) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+
+      event.preventDefault();
+      if (event.repeat) return;
+
+      const name = d.data.name === model.selectedBand
+        ? null
+        : d.data.name;
+
       update({ selectedBand: name });
     })
     .transition()
